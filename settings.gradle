@@ -53,3 +53,6 @@ settings.gradle.projectsLoaded {
 		}
 	}
 }
+include 'my-spring-test'
+include 'my-spring-test'
+
