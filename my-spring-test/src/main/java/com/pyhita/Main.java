@@ -16,6 +16,5 @@ public class Main {
 		Person person = ctx.getBean(Person.class);
 
 		System.out.println("person = " + person);
-
 	}
 }
