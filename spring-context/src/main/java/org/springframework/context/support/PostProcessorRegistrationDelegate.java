@@ -201,7 +201,7 @@ final class PostProcessorRegistrationDelegate {
 		for (String postProcessorName : nonOrderedPostProcessorNames) {
 			nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
 		}
-		invokeBeanFactoryPostProcessors(nonOrderedPostProcessors, beanFactory);
+		invokeBeanFactoryPostProcessors(nonOrderedPostProcessors, beanFactory); // invoke 所有的 BeanFactoryPostProcessor
 
 		// Clear cached merged bean definitions since the post-processors might have
 		// modified the original metadata, e.g. replacing placeholders in values...
@@ -271,7 +271,7 @@ final class PostProcessorRegistrationDelegate {
 		sortPostProcessors(orderedPostProcessors, beanFactory);
 		registerBeanPostProcessors(beanFactory, orderedPostProcessors);
 
-		// Now, register all regular BeanPostProcessors. 注册所有普通的BeanPostProcessor
+		// Now, register all regular BeanPostProcessors. 实例化所有普通的BeanPostProcessor
 		List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>(nonOrderedPostProcessorNames.size());
 		for (String ppName : nonOrderedPostProcessorNames) {
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class); // 创建每一个BeanPostProcessor

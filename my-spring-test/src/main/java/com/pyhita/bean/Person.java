@@ -1,6 +1,7 @@
 package com.pyhita.bean;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +13,7 @@ import org.springframework.core.metrics.ApplicationStartup;
  * @Author: kante_yang
  * @Date: 2024/2/19
  */
-public class Person implements ApplicationContextAware, InitializingBean {
+public class Person implements BeanNameAware, ApplicationContextAware, InitializingBean {
 
 	@Value("${JAVA_HOME}")
 	private String name;
@@ -57,6 +58,11 @@ public class Person implements ApplicationContextAware, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		System.out.println("Person# afterPropertiesSet .... ");
+	}
 
+	@Override
+	public void setBeanName(String name) {
+		System.out.println("setBeanName.....");
 	}
 }

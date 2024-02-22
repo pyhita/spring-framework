@@ -194,7 +194,7 @@ public abstract class BeanUtils {
 				int parameterCount = ctor.getParameterCount();
 				Assert.isTrue(args.length <= parameterCount, "Can't specify more arguments than constructor parameters");
 				if (parameterCount == 0) {
-					return ctor.newInstance();
+					return ctor.newInstance(); // 反射创建 实例
 				}
 				Class<?>[] parameterTypes = ctor.getParameterTypes();
 				Object[] argsWithDefaultValues = new Object[args.length];

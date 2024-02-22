@@ -126,6 +126,8 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 * <p>If {@link #setPropertySources} is called, <strong>environment and local properties will be
 	 * ignored</strong>. This method is designed to give the user fine-grained control over property
 	 * sources, and once set, the configurer makes no assumptions about adding additional sources.
+	 *
+	 * 处理BeanDefinition中的 ${} 占位符，替换成 real value
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -170,7 +172,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 			}
 		}
 
-		processProperties(beanFactory, createPropertyResolver(this.propertySources));
+		processProperties(beanFactory, createPropertyResolver(this.propertySources)); // 解析 BeanDefinition 中的占位符
 		this.appliedPropertySources = this.propertySources;
 	}
 

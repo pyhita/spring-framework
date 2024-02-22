@@ -123,11 +123,12 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			destroyBeans();
 			closeBeanFactory();
 		}
-		try {
+		try { // 创建新的 BeanFactory，这里创建的BeanFactory是DefaultListableBeanFactory 类型
+			// ApplicationContext 会通过 组合的方式，持有 BeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
-			customizeBeanFactory(beanFactory);
-			loadBeanDefinitions(beanFactory);
+			customizeBeanFactory(beanFactory); // 对BeanFactory 进行定制化
+			loadBeanDefinitions(beanFactory); // 加载 Bean Definitions
 			this.beanFactory = beanFactory;
 		}
 		catch (IOException ex) {
