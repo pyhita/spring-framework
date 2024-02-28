@@ -352,7 +352,7 @@ public abstract class ReflectionUtils {
 	 * @param mf the filter that determines the methods to apply the callback to
 	 * @throws IllegalStateException if introspection fails
 	 */
-	public static void doWithMethods(Class<?> clazz, MethodCallback mc, @Nullable MethodFilter mf) {
+	public static void doWithMethods(Class<?> clazz, MethodCallback mc, @Nullable MethodFilter mf) { // 对于所有符合条件的Method，执行赋值的Callback 回调
 		if (mf == USER_DECLARED_METHODS && clazz == Object.class) {
 			// nothing to introspect
 			return;
@@ -363,7 +363,7 @@ public abstract class ReflectionUtils {
 				continue;
 			}
 			try {
-				mc.doWith(method);
+				mc.doWith(method); // 对所有 MethodFilter 校验通过的Method 执行回调
 			}
 			catch (IllegalAccessException ex) {
 				throw new IllegalStateException("Not allowed to access method '" + method.getName() + "': " + ex);

@@ -90,7 +90,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 					List<Advisor> advisors = new ArrayList<>();
 					aspectNames = new ArrayList<>();
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
-							this.beanFactory, Object.class, true, false);
+							this.beanFactory, Object.class, true, false); // 拿到容器中所有的BeanName
 					for (String beanName : beanNames) {
 						if (!isEligibleBean(beanName)) {
 							continue;
@@ -101,15 +101,15 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (beanType == null) {
 							continue;
 						}
-						if (this.advisorFactory.isAspect(beanType)) {
+						if (this.advisorFactory.isAspect(beanType)) { // 当前类型是否是切面类 ？if it has the @Aspect annotation, and was not compiled by ajc.
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 								MetadataAwareAspectInstanceFactory factory =
-										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
-								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
+										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName); // 包装{beanFactroy, beanName, AspectMetadata}
+								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory); // 解析Aspect 拿到 所有的 Advisor
 								if (this.beanFactory.isSingleton(beanName)) {
-									this.advisorsCache.put(beanName, classAdvisors);
+									this.advisorsCache.put(beanName, classAdvisors); // 将 增强器 放入cache 中
 								}
 								else {
 									this.aspectFactoryCache.put(beanName, factory);

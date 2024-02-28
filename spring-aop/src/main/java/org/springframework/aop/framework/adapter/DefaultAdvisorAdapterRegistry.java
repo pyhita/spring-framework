@@ -83,7 +83,7 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 		}
 		for (AdvisorAdapter adapter : this.adapters) {
 			if (adapter.supportsAdvice(advice)) {
-				interceptors.add(adapter.getInterceptor(advisor));
+				interceptors.add(adapter.getInterceptor(advisor)); // 抽取每一个Advsor的Advice，转换成 interceptor
 			}
 		}
 		if (interceptors.isEmpty()) {
