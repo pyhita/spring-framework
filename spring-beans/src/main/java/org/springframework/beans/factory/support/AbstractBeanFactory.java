@@ -287,7 +287,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				markBeanAsCreated(beanName);
+				markBeanAsCreated(beanName); // 标记Bean正在被创建
 			}
 
 			StartupStep beanCreation = this.applicationStartup.start("spring.beans.instantiate")
@@ -309,7 +309,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						}
 						registerDependentBean(dep, beanName);
 						try {
-							getBean(dep);
+							getBean(dep); // 创建所有依赖的其他Bean
 						}
 						catch (NoSuchBeanDefinitionException ex) {
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
@@ -970,7 +970,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * freshly (re-)building it if necessary.
 	 * @since 5.3
 	 */
-	BeanPostProcessorCache getBeanPostProcessorCache() {
+	BeanPostProcessorCache getBeanPostProcessorCache() { // 初始化 BeanPostProcessorCache，遍历所有的BeanPostProcessor 进行初始化
 		synchronized (this.beanPostProcessors) {
 			BeanPostProcessorCache bppCache = this.beanPostProcessorCache;
 			if (bppCache == null) {
@@ -1707,6 +1707,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * <p>This allows the bean factory to optimize its caching for repeated
 	 * creation of the specified bean.
 	 * @param beanName the name of the bean
+	 *  标记Bean 已经被创建或者是正在被创建，加入到alreadyCreated这个set中
 	 */
 	protected void markBeanAsCreated(String beanName) {
 		if (!this.alreadyCreated.contains(beanName)) {

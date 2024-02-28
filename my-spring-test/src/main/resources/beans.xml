@@ -7,7 +7,11 @@
 
 
 	<context:component-scan base-package="com.pyhita.postprocessor"/>
-
-	<bean id="person" class="com.pyhita.bean.Person"/>
+	<context:property-placeholder location="beans.properties"/>
+	<bean id="cat" class="com.pyhita.bean.Cat"/>
+	<bean id="person" class="com.pyhita.bean.Person">
+		<property name="name" value="${person.name}"/>
+		<property name="cat" ref="cat"/>
+	</bean>
 
 </beans>

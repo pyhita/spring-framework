@@ -292,6 +292,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 				this.targetSourcedBeans.add(beanName);
 			}
 			Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName, targetSource);
+			// 创建代理对象 ？
 			Object proxy = createProxy(beanClass, beanName, specificInterceptors, targetSource);
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
@@ -345,6 +346,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Wrap the given bean if necessary, i.e. if it is eligible for being proxied.
+	 * 创建代理对象的核心逻辑，包装target object
 	 * @param bean the raw bean instance
 	 * @param beanName the name of the bean
 	 * @param cacheKey the cache key for metadata access
@@ -362,12 +364,12 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			return bean;
 		}
 
-		// Create proxy if we have advice.
+		// Create proxy if we have advice. 如果需要增强的话，创建代理对象
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
 			Object proxy = createProxy(
-					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean)); // 此时Bean的状态，实例化结果，属性赋值，依赖注入，初始化方法回调完成
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}
@@ -472,7 +474,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	private Object buildProxy(Class<?> beanClass, @Nullable String beanName,
 			@Nullable Object[] specificInterceptors, TargetSource targetSource, boolean classOnly) {
-
+		System.out.println("开始创建代理对象。。。。buildProxy");
 		if (this.beanFactory instanceof ConfigurableListableBeanFactory clbf) {
 			AutoProxyUtils.exposeTargetClass(clbf, beanName, beanClass);
 		}
@@ -492,7 +494,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		else {
 			// No proxyTargetClass flag enforced, let's apply our default checks...
 			if (shouldProxyTargetClass(beanClass, beanName)) {
-				proxyFactory.setProxyTargetClass(true);
+				proxyFactory.setProxyTargetClass(true); // 普通AOP 代理，走到这里
 			}
 			else {
 				evaluateProxyInterfaces(beanClass, proxyFactory);

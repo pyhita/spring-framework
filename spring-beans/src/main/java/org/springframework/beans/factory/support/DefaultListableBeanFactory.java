@@ -961,7 +961,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	@Override
-	public void preInstantiateSingletons() throws BeansException {
+	public void preInstantiateSingletons() throws BeansException { // 实例化 所有的单例Bean
 		if (logger.isTraceEnabled()) {
 			logger.trace("Pre-instantiating singletons in " + this);
 		}
@@ -971,11 +971,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 
 		// Trigger initialization of all non-lazy singleton beans... 容器启动的时候会遍历所有的BeanDefinitionNames，进行获取Bean
-		for (String beanName : beanNames) {
+		for (String beanName : beanNames) { // 遍历容器中所有的Bean Name
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) { // 处理实现了 FactoryBean接口的工厂Bean
-					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
+					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName); // 工厂Bean前缀 &beanName
 					if (bean instanceof SmartFactoryBean<?> smartFactoryBean && smartFactoryBean.isEagerInit()) {
 						getBean(beanName);
 					}

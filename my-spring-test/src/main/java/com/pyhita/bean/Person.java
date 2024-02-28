@@ -15,9 +15,11 @@ import org.springframework.core.metrics.ApplicationStartup;
  */
 public class Person implements BeanNameAware, ApplicationContextAware, InitializingBean {
 
-	@Value("${JAVA_HOME}")
+	// @Value("${JAVA_HOME}")
 	private String name;
 	private Integer age;
+
+	private Cat cat;
 
 	public Person() {
 		System.out.println("Person ....");
@@ -42,6 +44,14 @@ public class Person implements BeanNameAware, ApplicationContextAware, Initializ
 		this.age = age;
 	}
 
+
+	public Cat getCat() {
+		return cat;
+	}
+
+	public void setCat(Cat cat) {
+		this.cat = cat;
+	}
 
 	@Override
 	public String toString() {

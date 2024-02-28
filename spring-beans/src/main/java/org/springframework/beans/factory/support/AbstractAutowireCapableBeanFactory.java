@@ -508,7 +508,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
-			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+			Object bean = resolveBeforeInstantiation(beanName, mbdToUse); // 返回代理对象 而不是真正的对象
 			if (bean != null) {
 				return bean;
 			}
@@ -556,10 +556,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Instantiate the bean. 返回BeanWrapper对象
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
-			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
+			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName); // 工厂单例Bean直接从factoryBeanInstanceCache 中拿到
 		}
 		if (instanceWrapper == null) {
-			instanceWrapper = createBeanInstance(beanName, mbd, args);
+			instanceWrapper = createBeanInstance(beanName, mbd, args); // 普通单例Bean在此创建，通过反射创建Bean
 		}
 		Object bean = instanceWrapper.getWrappedInstance();
 		Class<?> beanType = instanceWrapper.getWrappedClass();
@@ -609,7 +609,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (earlySingletonExposure) {
-			Object earlySingletonReference = getSingleton(beanName, false);
+			Object earlySingletonReference = getSingleton(beanName, false); // Bean 创建完成之后，走到这里
 			if (earlySingletonReference != null) {
 				if (exposedObject == bean) {
 					exposedObject = earlySingletonReference;
@@ -1390,7 +1390,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// to support styles of field injection.
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
-				if (!bp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
+				if (!bp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) { // 执行InstantiationAwareBeanPostProcessor 的后置回调
 					return;
 				}
 			}
@@ -1403,11 +1403,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 			// Add property values based on autowire by name if applicable.
 			if (resolvedAutowireMode == AUTOWIRE_BY_NAME) {
-				autowireByName(beanName, mbd, bw, newPvs);
+				autowireByName(beanName, mbd, bw, newPvs); // 根据名字进行自动注入
 			}
 			// Add property values based on autowire by type if applicable.
 			if (resolvedAutowireMode == AUTOWIRE_BY_TYPE) {
-				autowireByType(beanName, mbd, bw, newPvs);
+				autowireByType(beanName, mbd, bw, newPvs); // 根据类型进行自动注入
 			}
 			pvs = newPvs;
 		}
@@ -1791,7 +1791,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throw new BeanCreationException(
 					(mbd != null ? mbd.getResourceDescription() : null), beanName, ex.getMessage(), ex);
 		}
-		if (mbd == null || !mbd.isSynthetic()) { // 执行BeanPostProcessor 的后置回调， 可以返回新的Bean替换工厂Bean，可以返回Null
+		if (mbd == null || !mbd.isSynthetic()) { // 执行BeanPostProcessor 的后置回调， 可以返回新的Bean替换工厂Bean，可以返回Null， AOP代理在此实现！
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 

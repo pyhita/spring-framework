@@ -12,19 +12,20 @@ public class MyInstantiationAwareBeanPostProcessor implements InstantiationAware
 		System.out.println("MyInstantiationAwareBeanPostProcessor .... ");
 	}
 
+
 	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName)
+	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName)
 			throws BeansException {
-		System.out.println("MyInstantiationAwareBeanPostProcessor# postProcessBeforeInitialization .... ");
-		return bean;
+		System.out.println("MyInstantiationAwareBeanPostProcessor# postProcessBeforeInstantiation .... ");
+		return null;
 	}
 
 	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName)
+	public boolean postProcessAfterInstantiation(Object bean, String beanName)
 			throws BeansException {
-		System.out.println("MyInstantiationAwareBeanPostProcessor# postProcessAfterInitialization .... ");
-		return bean;
+		return true;
 	}
+
 
 	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)

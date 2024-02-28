@@ -272,6 +272,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Derive further bean definitions from the configuration classes in the registry.
+	 * 从Configuration Class中获取Bean Definition信息
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -285,7 +286,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
 		this.registriesPostProcessed.add(registryId);
-
+		System.out.println("ConfigurationClassPostProcessor# postProcessBeanDefinitionRegistry .... ");
 		processConfigBeanDefinitions(registry); // 解析Configuration 配置类，扫描导入Bean Definition
 	}
 
