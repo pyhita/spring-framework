@@ -1,6 +1,5 @@
 package com.pyhita.aop;
 
-import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -17,43 +16,43 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
-public class LogAspect {
+public class LogAspect2 {
 
-	public LogAspect() {
+	public LogAspect2() {
 		System.out.println("LogAspect .... ");
 	}
 
 	@Before("execution(* com.pyhita.aop.HelloService.sayHello(..))")
 	public void logStart(JoinPoint joinPoint) {
 		String name = joinPoint.getSignature().getName();
-		System.out.println("logStart .......  ");
+		System.out.println("logStart2 .......  ");
 	}
 
 	@AfterReturning("execution(* com.pyhita.aop.HelloService.sayHello(..))")
 	public void logReturn(JoinPoint joinPoint) {
 		String name = joinPoint.getSignature().getName();
-		System.out.println("logReturn .......  ");
+		System.out.println("logReturn2 .......  ");
 	}
 
 	@After("execution(* com.pyhita.aop.HelloService.sayHello(..))")
 	public void logAfter(JoinPoint joinPoint) {
 		String name = joinPoint.getSignature().getName();
-		System.out.println("logAfter .......  ");
+		System.out.println("logAfter2 .......  ");
 	}
 
 	@AfterThrowing("execution(* com.pyhita.aop.HelloService.sayHello(..))")
 	public void logThrowing(JoinPoint joinPoint) {
 		String name = joinPoint.getSignature().getName();
-		System.out.println("logThrowing .......  ");
+		System.out.println("logThrowing2 .......  ");
 	}
 
 	@Around("execution(* com.pyhita.aop.HelloService.sayHello(..))")
 	public void logAround(ProceedingJoinPoint joinPoint) {
 
         try {
-			System.out.println("logAround before .......  ");
+			System.out.println("logAround2 before .......  ");
             joinPoint.proceed();
-			System.out.println("logAround after .......  ");
+			System.out.println("logAround2 after .......  ");
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
