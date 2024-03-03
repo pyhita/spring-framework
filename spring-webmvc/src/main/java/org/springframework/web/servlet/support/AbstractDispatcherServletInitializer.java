@@ -62,7 +62,7 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-		registerDispatcherServlet(servletContext);
+		registerDispatcherServlet(servletContext); // 注册DispatchServlet
 	}
 
 	/**
@@ -80,10 +80,10 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 		String servletName = getServletName();
 		Assert.state(StringUtils.hasLength(servletName), "getServletName() must not return null or empty");
 
-		WebApplicationContext servletAppContext = createServletApplicationContext();
+		WebApplicationContext servletAppContext = createServletApplicationContext(); // 创建Web 子容器
 		Assert.state(servletAppContext != null, "createServletApplicationContext() must not return null");
 
-		FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
+		FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext); // 创建DispatchServlet
 		Assert.state(dispatcherServlet != null, "createDispatcherServlet(WebApplicationContext) must not return null");
 		dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
 
@@ -93,8 +93,8 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 					"Check if there is another servlet registered under the same name.");
 		}
 
-		registration.setLoadOnStartup(1);
-		registration.addMapping(getServletMappings());
+		registration.setLoadOnStartup(1); // 设置容器启动时加载
+		registration.addMapping(getServletMappings()); // 添加servlet mapping
 		registration.setAsyncSupported(isAsyncSupported());
 
 		Filter[] filters = getServletFilters();
