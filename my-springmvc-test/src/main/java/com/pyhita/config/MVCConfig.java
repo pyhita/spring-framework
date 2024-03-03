@@ -1,8 +1,8 @@
 package com.pyhita.config;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @Author: kante_yang
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("com.pyhita.web")
-public class AppConfig {
+@EnableWebMvc
+public class MVCConfig {
 
 }

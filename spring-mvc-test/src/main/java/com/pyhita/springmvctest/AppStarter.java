@@ -1,36 +1,26 @@
-package com.pyhita;
+package com.pyhita.springmvctest;
 
-import com.pyhita.config.MVCConfig;
+import com.pyhita.springmvctest.config.AppConfig;
+import jakarta.servlet.ServletContainerInitializer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.ServletRegistration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.Set;
 
-/**
- * @Author: kante_yang
- * @Date: 2024/2/28
- */
+public class AppStarter implements ServletContainerInitializer {
 
-/**
- *  只要Tomcat 启动就会帮我们加载这个类：
- *  * 创建容器，指定了配置类(所有ioc aop 等spring的功能没有问题了)
- *  * 注册一个servlet，DispatchServlet
- *  * 以后所有的web请求 都交个DispatchServlet 处理
- */
-public class AppStarter /*implements ServletContainerInitializer*/ {
-
-//	@Override
+	@Override
 	public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
 		// 注解方式 mvc 创建IoC container
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.register(MVCConfig.class);
+		context.register(AppConfig.class);
 
 		// 创建DispatchServlet
 		DispatcherServlet servlet = new DispatcherServlet(context);
-		Dynamic registration = ctx.addServlet("app", servlet);
+		ServletRegistration.Dynamic registration = ctx.addServlet("app", servlet);
 		registration.setLoadOnStartup(1);
 		registration.addMapping("/");
 	}

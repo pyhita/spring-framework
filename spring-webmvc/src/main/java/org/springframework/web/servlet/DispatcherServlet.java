@@ -507,14 +507,14 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
-		initMultipartResolver(context);
-		initLocaleResolver(context);
-		initThemeResolver(context);
-		initHandlerMappings(context);
-		initHandlerAdapters(context);
-		initHandlerExceptionResolvers(context);
+		initMultipartResolver(context); // 文件上传解析器
+		initLocaleResolver(context); // 本地化解析器
+		initThemeResolver(context); // 主题解析器
+		initHandlerMappings(context); // HandlerMapping，路径映射
+		initHandlerAdapters(context); // HandlerAdapters，适配不同形式控制器方法
+		initHandlerExceptionResolvers(context); // 异常解析器
 		initRequestToViewNameTranslator(context);
-		initViewResolvers(context);
+		initViewResolvers(context); // 视图解析器
 		initFlashMapManager(context);
 	}
 
@@ -601,7 +601,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initHandlerMappings(ApplicationContext context) {
 		this.handlerMappings = null;
 
-		if (this.detectAllHandlerMappings) {
+		if (this.detectAllHandlerMappings) { // 父子容器中都会找 Handler
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);

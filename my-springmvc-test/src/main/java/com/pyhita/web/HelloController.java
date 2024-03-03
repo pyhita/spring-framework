@@ -1,5 +1,7 @@
 package com.pyhita.web;
 
+import com.pyhita.service.HelloService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+	@Autowired
+	private HelloService helloService;
+
 	@RequestMapping("/hello")
 	public String hello() {
-
-		return "Hello Spring Web MVC !";
+		System.out.println("xxxxxx");
+		return helloService.hello();
 	}
 }

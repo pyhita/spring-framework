@@ -19,6 +19,9 @@ dependencies {
     implementation(project(":spring-core"))
     compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '4.0.0'
     compileOnly group: 'jakarta.servlet.jsp', name: 'jakarta.servlet.jsp-api', version: '3.1.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.2.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '3.2.3'
+    implementation group: 'io.rest-assured', name: 'spring-mock-mvc', version: '5.4.0'
 }
 
 test {

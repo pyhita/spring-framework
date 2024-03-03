@@ -14,11 +14,7 @@ import org.springframework.core.metrics.ApplicationStartup;
  */
 public class Person implements BeanNameAware, ApplicationContextAware, InitializingBean {
 
-<<<<<<< HEAD
 	@Value("person")
-=======
-	// @Value("${JAVA_HOME}")
->>>>>>> a1d6bc0fe05efee69cbe485dd95283e9a5c37a45
 	private String name;
 	private Integer age;
 
