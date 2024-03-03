@@ -5,7 +5,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationStartupAware;
 import org.springframework.core.metrics.ApplicationStartup;
 
 /**
@@ -14,7 +13,7 @@ import org.springframework.core.metrics.ApplicationStartup;
  */
 public class Person implements ApplicationContextAware, InitializingBean {
 
-	@Value("${JAVA_HOME}")
+	@Value("person")
 	private String name;
 	private Integer age;
 
