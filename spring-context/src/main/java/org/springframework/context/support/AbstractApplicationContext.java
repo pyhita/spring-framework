@@ -193,7 +193,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Nullable
 	private ConfigurableEnvironment environment;
 
-	/** BeanFactoryPostProcessors to apply on refresh. */
+	/** 存储所有的BeanFactoryPostProcessor BeanFactoryPostProcessors to apply on refresh. */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/** System time in milliseconds when this context started. */
@@ -602,23 +602,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
-				// Invoke factory processors registered as beans in the context. 调用所有的BeanFactoryPostProcessors
-				invokeBeanFactoryPostProcessors(beanFactory);
+				// Invoke factory processors registered as beans in the context. 调用所有的BeanDefinitionPostProcessor BeanFactoryPostProcessors
+				invokeBeanFactoryPostProcessors(beanFactory); // 对工厂的增强
 				// Register bean processors that intercept bean creation. // 注册所有的BeanPostProcessor
-				registerBeanPostProcessors(beanFactory);
+				registerBeanPostProcessors(beanFactory); // 对 Bean的增强
 				beanPostProcess.end();
 
 				// Initialize message source for this context.
-				initMessageSource();
+				initMessageSource(); // 消息国际化
 
 				// Initialize event multicaster for this context.
-				initApplicationEventMulticaster();
+				initApplicationEventMulticaster(); // 初始化 Event
 
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
 				// Check for listener beans and register them. 注册所有的ApplicationListener
-				registerListeners();
+				registerListeners(); // 注册 事件监听器
 
 				// Instantiate all remaining (non-lazy-init) singletons. 完成Bean工厂的初始化，实例化所有的单实例Bean
 				finishBeanFactoryInitialization(beanFactory);
@@ -710,6 +710,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 刷新BeanFactory
 		refreshBeanFactory();
 		return getBeanFactory();
 	}

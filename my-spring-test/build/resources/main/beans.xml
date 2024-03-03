@@ -7,10 +7,20 @@
 
 
 	<context:component-scan base-package="com.pyhita.postprocessor"/>
+<<<<<<< HEAD
 
 	<bean id="person" class="com.pyhita.bean.Person"/>
 	<context:property-placeholder location="classpath:beans.properties"/>
 	<bean id="dog" class="com.pyhita.bean.Dog">
 		<property name="name" value="${dog.name}"/>
 	</bean>
+=======
+	<context:property-placeholder location="beans.properties"/>
+	<bean id="cat" class="com.pyhita.bean.Cat"/>
+	<bean id="person" class="com.pyhita.bean.Person">
+		<property name="name" value="${person.name}"/>
+		<property name="cat" ref="cat"/>
+	</bean>
+
+>>>>>>> a1d6bc0fe05efee69cbe485dd95283e9a5c37a45
 </beans>

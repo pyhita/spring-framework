@@ -271,13 +271,13 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
-		Object cacheKey = getCacheKey(beanClass, beanName);
+		Object cacheKey = getCacheKey(beanClass, beanName); // 首先回调到到这里
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
 			if (this.advisedBeans.containsKey(cacheKey)) {
 				return null;
 			}
-			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
+			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) { // 判断是否是基础类 或者 是否应当跳过
 				this.advisedBeans.put(cacheKey, Boolean.FALSE);
 				return null;
 			}
@@ -292,6 +292,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 				this.targetSourcedBeans.add(beanName);
 			}
 			Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName, targetSource);
+			// 创建代理对象 ？
 			Object proxy = createProxy(beanClass, beanName, specificInterceptors, targetSource);
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
@@ -301,8 +302,22 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	}
 
 	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName)
+			throws BeansException {
+		System.out.println();
+		return null;
+	}
+
+	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
 		return pvs;  // skip postProcessPropertyValues
+	}
+
+	@Override
+	public boolean postProcessAfterInstantiation(Object bean, String beanName)
+			throws BeansException {
+		System.out.println();
+		return true;
 	}
 
 	/**
@@ -310,12 +325,15 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * identified as one to proxy by the subclass.
 	 * @see #getAdvicesAndAdvisorsForBean
 	 */
+
+
+
 	@Override
 	public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
 		if (bean != null) {
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
 			if (this.earlyBeanReferences.remove(cacheKey) != bean) {
-				return wrapIfNecessary(bean, beanName, cacheKey);
+				return wrapIfNecessary(bean, beanName, cacheKey);  // 真正生成了 代理对象
 			}
 		}
 		return bean;
@@ -345,6 +363,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Wrap the given bean if necessary, i.e. if it is eligible for being proxied.
+	 * 创建代理对象的核心逻辑，包装target object
 	 * @param bean the raw bean instance
 	 * @param beanName the name of the bean
 	 * @param cacheKey the cache key for metadata access
@@ -362,12 +381,12 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			return bean;
 		}
 
-		// Create proxy if we have advice.
-		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
+		// Create proxy if we have advice. 如果需要增强的话，创建代理对象
+		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null); // 获取到适合本Bean的Advisor 对象
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
 			Object proxy = createProxy(
-					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean)); // 此时Bean的状态，实例化结果，属性赋值，依赖注入，初始化方法回调完成
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}
@@ -388,7 +407,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @see org.springframework.aop.framework.AopInfrastructureBean
 	 * @see #shouldSkip
 	 */
-	protected boolean isInfrastructureClass(Class<?> beanClass) {
+	protected boolean isInfrastructureClass(Class<?> beanClass) { // 判断是否是一个 infrastructure class
 		boolean retVal = Advice.class.isAssignableFrom(beanClass) ||
 				Pointcut.class.isAssignableFrom(beanClass) ||
 				Advisor.class.isAssignableFrom(beanClass) ||
@@ -472,7 +491,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	private Object buildProxy(Class<?> beanClass, @Nullable String beanName,
 			@Nullable Object[] specificInterceptors, TargetSource targetSource, boolean classOnly) {
-
+		System.out.println("开始创建代理对象。。。。buildProxy");
 		if (this.beanFactory instanceof ConfigurableListableBeanFactory clbf) {
 			AutoProxyUtils.exposeTargetClass(clbf, beanName, beanClass);
 		}
@@ -492,7 +511,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		else {
 			// No proxyTargetClass flag enforced, let's apply our default checks...
 			if (shouldProxyTargetClass(beanClass, beanName)) {
-				proxyFactory.setProxyTargetClass(true);
+				proxyFactory.setProxyTargetClass(true); // 普通AOP 代理，走到这里
 			}
 			else {
 				evaluateProxyInterfaces(beanClass, proxyFactory);

@@ -320,7 +320,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	}
 
 	/**
-	 * Load bean definitions from the specified XML file.
+	 * Load bean definitions from the specified XML file. 从XML文件中加载Bean Definition信息
 	 * @param encodedResource the resource descriptor for the XML file,
 	 * allowing to specify an encoding to use for parsing the file
 	 * @return the number of bean definitions found
@@ -344,7 +344,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			if (encodedResource.getEncoding() != null) {
 				inputSource.setEncoding(encodedResource.getEncoding());
 			}
-			return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
+			return doLoadBeanDefinitions(inputSource, encodedResource.getResource()); // 真正加载的位置
 		}
 		catch (IOException ex) {
 			throw new BeanDefinitionStoreException(
@@ -396,8 +396,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
-			Document doc = doLoadDocument(inputSource, resource);
-			int count = registerBeanDefinitions(doc, resource);
+			Document doc = doLoadDocument(inputSource, resource); // 将XML文件 转成 Document 对象
+			int count = registerBeanDefinitions(doc, resource); // 注册Bean Definition信息
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
 			}
@@ -513,6 +513,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see #loadBeanDefinitions
 	 * @see #setDocumentReaderClass
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
+	 *
+	 * 从 DOM 对象中，加载Bean Definition
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();

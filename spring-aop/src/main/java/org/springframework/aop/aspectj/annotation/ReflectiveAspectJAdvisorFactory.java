@@ -73,7 +73,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 
 	// Exclude @Pointcut methods
 	private static final MethodFilter adviceMethodFilter = ReflectionUtils.USER_DECLARED_METHODS
-			.and(method -> (AnnotationUtils.getAnnotation(method, Pointcut.class) == null));
+			.and(method -> (AnnotationUtils.getAnnotation(method, Pointcut.class) == null)); // 是一个USER_DECLARED_METHODS 并且不可以是Pointcut
 
 	private static final Comparator<Method> adviceMethodComparator;
 
@@ -121,7 +121,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 
 
 	@Override
-	public List<Advisor> getAdvisors(MetadataAwareAspectInstanceFactory aspectInstanceFactory) {
+	public List<Advisor> getAdvisors(MetadataAwareAspectInstanceFactory aspectInstanceFactory) { // 解析Aspect 切面类，拿到所有的Advisors
 		Class<?> aspectClass = aspectInstanceFactory.getAspectMetadata().getAspectClass();
 		String aspectName = aspectInstanceFactory.getAspectMetadata().getAspectName();
 		validate(aspectClass);
@@ -141,7 +141,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 			// discovered via reflection in order to support reliable advice ordering across JVM launches.
 			// Specifically, a value of 0 aligns with the default value used in
 			// AspectJPrecedenceComparator.getAspectDeclarationOrder(Advisor).
-			Advisor advisor = getAdvisor(method, lazySingletonAspectInstanceFactory, 0, aspectName);
+			Advisor advisor = getAdvisor(method, lazySingletonAspectInstanceFactory, 0, aspectName); // Method -> Advisor
 			if (advisor != null) {
 				advisors.add(advisor);
 			}
@@ -168,7 +168,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		List<Method> methods = new ArrayList<>();
 		ReflectionUtils.doWithMethods(aspectClass, methods::add, adviceMethodFilter);
 		if (methods.size() > 1) {
-			methods.sort(adviceMethodComparator);
+			methods.sort(adviceMethodComparator); // 对拿到的所有增强方法 进行排序
 		}
 		return methods;
 	}
@@ -211,7 +211,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		}
 
 		return new InstantiationModelAwarePointcutAdvisorImpl(expressionPointcut, candidateAdviceMethod,
-				this, aspectInstanceFactory, declarationOrderInAspect, aspectName);
+				this, aspectInstanceFactory, declarationOrderInAspect, aspectName); // 封装成Advisor，Advisor封装了好多信息：Method，Pointcut，....
 	}
 
 	@Nullable

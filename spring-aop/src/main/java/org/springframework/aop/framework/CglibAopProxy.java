@@ -165,13 +165,14 @@ class CglibAopProxy implements AopProxy, Serializable {
 		return (Class<?>) buildProxy(classLoader, true);
 	}
 
+	// 通过CCLIB 创建代理对象
 	private Object buildProxy(@Nullable ClassLoader classLoader, boolean classOnly) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Creating CGLIB proxy: " + this.advised.getTargetSource());
 		}
 
 		try {
-			Class<?> rootClass = this.advised.getTargetClass();
+			Class<?> rootClass = this.advised.getTargetClass(); // 通过CGLIB的方式创建代理对象
 			Assert.state(rootClass != null, "Target class must be available for creating a CGLIB proxy");
 
 			Class<?> proxySuperClass = rootClass;
@@ -700,7 +701,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 				// Get as late as possible to minimize the time we "own" the target, in case it comes from a pool...
 				target = targetSource.getTarget();
 				Class<?> targetClass = (target != null ? target.getClass() : null);
-				List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+				List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass); // Advisor -> interceptor
 				Object retVal;
 				// Check whether we only have one InvokerInterceptor: that is,
 				// no real advice, but just reflective invocation of the target.
@@ -713,7 +714,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 					retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
 				}
 				else {
-					// We need to create a method invocation...
+					// We need to create a method invocation... 职责链 执行 interceptor chain
 					retVal = new CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();
 				}
 				return processReturnType(proxy, target, method, args, retVal);

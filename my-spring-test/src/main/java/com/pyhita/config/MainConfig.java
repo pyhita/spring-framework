@@ -1,6 +1,7 @@
 package com.pyhita.config;
 
 import com.pyhita.bean.Person;
+import com.pyhita.factorybean.HelloFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,5 +19,10 @@ public class MainConfig {
 		person.setAge(22);
 
 		return person;
+	}
+
+	@Bean
+	public HelloFactory helloFactory() {
+		return new HelloFactory();
 	}
 }

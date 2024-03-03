@@ -4,6 +4,7 @@ import com.pyhita.bean.Person;
 import com.pyhita.config.MainConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @Author: kante_yang
@@ -12,9 +13,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
     public static void main(String[] args) {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(MainConfig.class);
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("beans2.xml");
 		Person person = ctx.getBean(Person.class);
-
-		System.out.println("person = " + person);
 	}
 }
